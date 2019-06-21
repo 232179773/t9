@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>T9WORK</display-name>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/config/application-context.xml
+		</param-value>
+	</context-param>
+	
+	<!-- 中文传递乱码过滤器 -->
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.t9.system.web.EncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 登陆验证过滤器 -->
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.t9.system.web.LoginFilter</filter-class>
+		<init-param>
+			<param-name>redirect</param-name>
+			<param-value>/frame/login.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>allow</param-name>
+			<param-value>/frame/login.jsp;front</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/frame/*</url-pattern>
+	</filter-mapping>
+	   
+   <filter>   
+       <filter-name>struts2</filter-name>   
+       <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		<init-param>
+			<param-name>actionPackages</param-name>
+			<param-value>com.t9.system.action,com.t9.p2p.action</param-value>
+		</init-param>   
+   </filter>   
+   <filter-mapping>   
+		<filter-name>struts2</filter-name>   
+		<url-pattern>/service/*</url-pattern>   
+		<dispatcher>REQUEST</dispatcher>   
+	    <dispatcher>FORWARD</dispatcher>   
+	    <dispatcher>INCLUDE</dispatcher>   
+   </filter-mapping>  
+   
+	<!-- struts2核心过滤器 
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>
+		<init-param>
+			<param-name>actionPackages</param-name>
+			<param-value>com.t9.system.action,com.t9.bussiness.action,com.t9.bussiness.front</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/service/*</url-pattern>
+	</filter-mapping>
+	-->
+	<servlet> 
+        <servlet-name>JspSupportServlet</servlet-name> 
+        <servlet-class> org.apache.struts2.views.JspSupportServlet </servlet-class> 
+        <load-on-startup>1</load-on-startup> 
+    </servlet>
+    
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.shtml</welcome-file>
+		<welcome-file>index.jhtml</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/WEB-INF/error/403.html</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+	<mime-mapping>
+		<extension>rar</extension>
+		<mime-type>application/zip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>doc</extension>
+		<mime-type>application/zip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wps</extension>
+		<mime-type>application/zip</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>et</extension>
+		<mime-type>application/zip</mime-type>
+	</mime-mapping>
+    
+</web-app>

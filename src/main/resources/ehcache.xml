@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache name="ColorCache">
+	<diskStore path="D:/work/log" />
+  <defaultCache
+      maxElementsInMemory="10000"
+      eternal="false"
+      timeToIdleSeconds="120"
+      timeToLiveSeconds="120"
+      overflowToDisk="true"
+      diskSpoolBufferSizeMB="30"
+      maxElementsOnDisk="10000000"
+      diskPersistent="false"
+      diskExpiryThreadIntervalSeconds="120"
+      memoryStoreEvictionPolicy="LRU"/>
+  <cache name="pdmInfo"
+         maxElementsInMemory="1"
+         maxElementsOnDisk="100000000"
+      	overflowToDisk="true"
+         eternal="false"
+         timeToIdleSeconds="120"
+         timeToLiveSeconds="100"
+         memoryStoreEvictionPolicy="LFU">
+  </cache>
+</ehcache>

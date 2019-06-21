@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>WdatePickerDemo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	
+	<script type="text/javascript" src="../../system/js/My97DatePicker/WdatePicker.js"></script>
+
+</head>
+	<body>
+		普通：<input type="text" onClick="WdatePicker();"/>
+		图片点击：<input type="text" id="w1"/>
+		<img src="../../system/js/My97DatePicker/skin/datePicker.gif" onClick="WdatePicker({el:$dp.$('w1')})" width="16" height="22" align="absmiddle"/>
+		<br>
+		按周：<input type="text" onClick="WdatePicker({isShowWeek:true})"/>
+		只读：<input type="text" onClick="WdatePicker({isShowClear:false,readOnly:true})"/>
+		<br>
+		时间空间的显示位置：<input type="text" onClick="WdatePicker({position:{left:100,top:50}})"> 
+		<br>
+		起点时间:<input type="text" onClick="WdatePicker({startDate:'1987-01-01'})">
+		时间：<input type="text" onClick="WdatePicker({dateFmt:'yyyy年MM月dd日 HH时mm分ss秒'})">
+		时分秒：<input type="text" onClick="WdatePicker({skin:'whyGreen',dateFmt:'H:mm:ss'})">
+		年月:<input type="text" onClick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy/MM/dd'})">
+		<br>
+		多语言:<input type="text" onClick="WdatePicker({lang:'zh-tw'})">
+		<input type="text" onClick="WdatePicker({lang:'en'})">
+		<input type="text" onClick="WdatePicker({lang:'zh-cn'})">
+		<br>
+		显示日期范围：<input type="text" onClick="WdatePicker({skin:'whyGreen',minDate:'2013-07-01',maxDate:'2013-07-05'})"><br/>
+		大于今天的时间(包括今天):<input type="text" onClick="WdatePicker({skin:'whyGreen',minDate:'%y-%M-%d'})"><br/>
+		小于今天的时间（包括今天）:<input type="text" onClick="WdatePicker({skin:'whyGreen',maxDate:'%y-%M-%d'})"><br/>
+		今天以后的时间不包括今天:<input type="text" onClick="WdatePicker({skin:'whyGreen',minDate:'%y-%M-#{%d+1}'})"><br/>
+		只能选择本月:<input type="text" onClick="WdatePicker({skin:'whyGreen',minDate:'%y-%M-01',maxDate:'%y-%M-%ld'})"><br/>
+		平面显示：<div id="div1"></div>
+		<br>
+	</body>
+		<script>
+			WdatePicker({eCont:'div1',onpicked:function(dp){
+				
+									alert('您选择的时间是:'+dp.cal.getDateStr());
+								}
+			});
+	</script>
+</html>

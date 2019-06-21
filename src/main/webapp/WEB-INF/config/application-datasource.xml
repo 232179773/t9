@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd	
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	>
+    <bean id="systemInfo" class="com.t9.system.common.XmlConfig">
+        <property name="table2DataSourceMap">
+            <map>
+                  <entry key="(^HR|^PMO|^CO|^IC)" value="dataSource_26"/>
+                  <entry key="default" value="dataSource_default"/>
+           </map>
+        </property>
+    </bean>
+    
+    <bean id="bitronixConfig" factory-method="getConfiguration" 
+                class="bitronix.tm.TransactionManagerServices">
+                <property name="serverId" value="spring-btm" />
+                <property name="logPart1Filename" value="../tm_journal/btm1_journal_#{systemInfo.boottime}.tlog"/>
+                <property name="logPart2Filename" value="../tm_journal/btm2_journal_#{systemInfo.boottime}.tlog"/>
+                <property name="defaultTransactionTimeout" value="9000"/>
+                <property name="gracefulShutdownInterval" value="120"/>
+                <property name="backgroundRecoveryIntervalSeconds" value="120"/>
+                <property name="disableJmx" value="true"/>
+    </bean>
+    
+    
+    <bean id="bitronixTransactionManager" factory-method="getTransactionManager" class="bitronix.tm.TransactionManagerServices" 
+        depends-on="bitronixConfig" destroy-method="shutdown" />
+
+     <bean id="jtaTransactionFactory" class="com.t9.system.trans.LocalJtaTransactionFactory">
+         <property name="userTransaction" ref="bitronixTransactionManager" />
+    </bean>
+    <!-- 分布式事务 create BTM transaction manager  内部管理-->
+    <!-- ///////////////////////////////////////////////// -->
+    
+    
+    
+
+    <bean id="dataSource_default"  class="bitronix.tm.resource.jdbc.PoolingDataSource"
+                init-method="init" destroy-method="close">
+                <property name="uniqueName">
+                    <value>DS-XADBMS-25</value>
+                </property>
+                <property name="className" value="#{systemInfo.jdbc_xa_driver_key}"></property>
+                <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+                <!--  
+                <property name="testQuery" value="select 1 from dual" />
+                <property name="isolationLevel" value="READ_COMMITTED"/>
+                -->
+                <property name="allowLocalTransactions" value="true" />
+                <property name="acquisitionTimeout" value="30"/>
+                <property name="preparedStatementCacheSize" value="20"/>
+                <property name="acquisitionInterval" value="5"/>
+    
+                <property name="enableJdbc4ConnectionTest" value="true"/>
+                <property name="maxIdleTime" value="60"/>
+                
+                <property name="driverProperties">
+                    <props>
+                        <prop key="URL">${db1.jdbc.url}</prop>
+                        <prop key="user">${db1.jdbc.username}</prop>
+                        <prop key="password">${db1.jdbc.password}</prop>
+                    </props>
+                </property>
+    </bean>
+    
+    
+    
+    
+    <bean id="dataSource_26"  class="bitronix.tm.resource.jdbc.PoolingDataSource"
+                init-method="init" destroy-method="close">
+                <property name="uniqueName">
+                    <value>DS-XADBMS-26</value>
+                </property>
+                <property name="className" value="#{systemInfo.jdbc_xa_driver_key}"></property>
+                <property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+                <!--  
+                <property name="testQuery" value="select 1 from dual" />
+                <property name="isolationLevel" value="READ_COMMITTED"/>
+                -->
+                <property name="allowLocalTransactions" value="true" />
+                <property name="acquisitionTimeout" value="30"/>
+                <property name="preparedStatementCacheSize" value="20"/>
+                <property name="acquisitionInterval" value="5"/>
+        
+                <property name="enableJdbc4ConnectionTest" value="true"/>
+                <property name="maxIdleTime" value="60"/>
+                
+                <property name="driverProperties">
+                    <props>
+                        <prop key="URL">${db2.jdbc.url}</prop>
+                        <prop key="user">${db2.jdbc.username}</prop>
+                        <prop key="password">${db2.jdbc.password}</prop>
+                    </props>
+                    
+                </property>
+    </bean>
+    
+    
+    <bean id="hibernateTemplate_default" class="org.springframework.orm.hibernate3.HibernateTemplate">
+     <property name="sessionFactory">
+        <bean parent="sessionFactory">
+            <property name="dataSource" ref="dataSource_default" />
+            
+        </bean>
+     </property>
+    </bean>
+    
+    <bean id="hibernateTemplate_26" class="org.springframework.orm.hibernate3.HibernateTemplate">
+     <property name="sessionFactory">
+        <bean parent="sessionFactory">
+            <property name="dataSource" ref="dataSource_26" />
+        </bean>
+     </property>
+    </bean>
+
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" abstract="true">
+        <property name="packagesToScan" value="cn.conow.taskEntrust.entity,cn.conow.activitiNotice.entity,cn.conow.activiti.entity,cn.conow.system.entity,cn.conow.hr.entity,cn.conow.pmo.entity,cn.conow.fm.entity,cn.conow.co.entity,cn.conow.fireflow.entity,cn.conow.oauth.entity,cn.conow.sample.entity,cn.conow.ic.entity,cn.conow.eas.entity,cn.conow.im.entity,cn.conow.am.entity" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.dialect">#{systemInfo.hibernateDialect}</prop>
+                
+                <!--配置数据库分布式事务的配置 BTMTransactionManagerLookup -->
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="javax.persistence.validation.mode">none</prop>
+                <prop key="hibernate.jdbc.batch_size">50</prop>
+                <prop key="hibernate.jdbc.fetch_size">100</prop>
+                <prop key="hibernate.jdbc.batch_versioned_data">true</prop>
+                <prop key="hibernate.order_inserts">true</prop>
+                <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">false</prop>
+                <prop key="hibernate.cache.use_query_cache">false</prop>
+                <prop key="hibernate.current_session_context_class">jta</prop>
+                <prop key="hibernate.transaction.factory_class">cn.conow.system.transaction.LocalJtaTransactionFactory</prop>
+                <prop key="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.BTMTransactionManagerLookup</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
+                <prop key="hibernate.transaction.auto_close_session">false</prop>
+                <prop key="hibernate.connection.release_mode">auto</prop>               
+            </props>
+        </property>
+    </bean>
+    
+    
+    <!-- jta事务管理器 -->
+    <bean id="transactionManager_default" class="org.springframework.transaction.jta.JtaTransactionManager" primary="true">
+            <property name="autodetectTransactionManager" value="false" />
+            <property name="transactionManager" ref="bitronixTransactionManager" />
+            <property name="userTransaction" ref="bitronixTransactionManager" />
+    </bean>
+    
+    
+</beans>

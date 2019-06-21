@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="zh-cn" http-equiv="Content-Language"><title></title>
+<#include "/WEB-INF/front/include/_include.ftl"/>
+<script type="text/javascript">
+	function saveUserInfo(){
+		var param=$('#userInfoEdit').serializeJSON();
+		url="service/userCenterControl!updateUserInnfo";
+		T9.post(url,param,function(result){
+			if(result.success){
+				T9.alert("修改成功！");
+				T9.dialogClose();
+			}
+		});
+	}
+	
+	function gotoAddressManage(){
+		url="service/receiveAddress!addressManage";
+		T9.navigate(url);
+	}
+	
+</script>
+</head>
+<body>
+		<#include "/WEB-INF/front/include/head.ftl"/>
+	<div class="content">
+		<!-- head -->
+		<div class="head">
+			<div class="topSe">
+				<input type="text" />
+				<span></span>
+			</div>
+		</div>
+		<!-- head end -->
+		
+		<!-- userBox -->
+			<div class="userBox">
+				<div class="userLeft">
+					<img src="front//images/bg/lo.png" class="img" />
+					<ul>
+						<li>个人资料</li>
+						<li><a onclick="gotoAddressManage()">收货地址</a></li>
+						<li>安全设置</li>
+						<li class="act">我的收藏</li>
+					</ul>
+				</div>
+				<div class="userRight">
+					<form name="userInfoEdit" id="userInfoEdit" method="post" data-validator-option="{valid:saveUserInfo}">
+					<fieldset>
+					<h2>个人资料</h2>
+					<p><label>用户名：</label>${systemUser.LOGIN_CODE}</p>
+					<p><label>真实姓名：</label><input type="text" name="NAME" data-rule="真实姓名:required" value="${systemUser.NAME}" /></p>
+					<p><label>昵称：</label><input type="text" name="NICKNAME" value="${(systemUser.NICKNAME)!""}" /></p>
+					<p><label>手机：</label><input type="text" name="MOBLIE_PHONE" data-rule="手机:required;mobile" value="${(systemUser.MOBLIE_PHONE)!""}" /></p>
+					<p><label>固定电话：</label><input type="text" name="TELEPHONE" data-rule="tel" value="${(systemUser.TELEPHONE)!""}" /></p>
+					<p><label>邮箱：</label>${(systemUser.POSTCODE)!""}</p>
+					<#if systemUser.REGION??>
+					<select class="combox" name="province" showNull="true" sefUrl="type=PRIVINCE" initVal="${systemUser.REGION[0..1]}000000" ref="city" refUrl="type=GETREGION_BY_PARENT_CODE&PARENT_CODE={value}" style="width:120px">
+					</select>
+					<select class="combox" name="city" id="city"  showNull="true"  refUrl="type=GETREGION_BY_PARENT_CODE&PARENT_CODE={value}"  initVal="${systemUser.REGION[0..3]}0000" ref="region" style="width:120px">
+					</select>
+					<select class="combox" name="REGION" id="region"  showNull="true" initVal="${systemUser.REGION[0..5]}00"  style="width:120px">
+					</select>
+					<#else>
+					<select class="combox" name="province" showNull="true" sefUrl="type=PRIVINCE" ref="city" refUrl="type=GETREGION_BY_PARENT_CODE&PARENT_CODE={value}" style="width:120px">
+					</select>
+					<select class="combox" name="city" id="city"  showNull="true"  refUrl="type=GETREGION_BY_PARENT_CODE&PARENT_CODE={value}"  ref="REGION" style="width:120px">
+					</select>
+					<select class="combox" name="REGION" id="region"  showNull="true"  style="width:120px">
+					</select>
+					</#if>
+					<p><label>详细地址：</label><input type="text" name="ADDRESS" value="${(systemUser.ADDRESS)!""}" /></p>
+					<button type="submit">保存</button>
+					</fieldset>
+					</form>
+				</div>
+			</div>
+		<!-- userBox end -->	
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<constant name="struts.locale" value="zh_CN" /> 
+
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 国际化资源文件名称 -->
+	<constant name="struts.custom.i18n.resources" value="errorMessage" />
+	
+	<!-- 是否自动加载国际化资源文件  -->
+	<constant name="struts.i18n.reload" value="true" />
+		    
+	<package name="t9package" extends="struts-default">
+	    <interceptors>
+	    	<interceptor name="sessionOut" class="com.t9.system.web.SessionInterceptor" >
+	    		<param name="allow">
+	    		</param>
+	    	</interceptor>
+	    	<interceptor name="oprationLog" class="com.t9.system.web.OperationInterceptor"></interceptor>
+	    	<interceptor-stack name="myStack">
+	    		<interceptor-ref name="sessionOut"></interceptor-ref>
+ 	    		<interceptor-ref name="oprationLog"></interceptor-ref> 
+	    		<interceptor-ref name="defaultStack"></interceptor-ref>
+	    	</interceptor-stack>
+	    </interceptors>
+	    
+	    <default-interceptor-ref name="myStack"></default-interceptor-ref>	 
+	    
+	    <default-action-ref name="defaultAction"></default-action-ref>
+	     
+		<global-results>
+		    <result name="Login">/login.jsp</result> <!--  type="redirect" 重定向,否则转发-->
+			<result name="Exception" type="chain">exception</result>
+		</global-results>
+		
+		<!-- 捕获到Exception,跳转到Exception.jsp,result="Exception" 对应global-results中name="Exception" -->
+		<global-exception-mappings>
+			<exception-mapping result="Exception" exception="java.lang.Exception" /> 
+			<exception-mapping result="Exception" exception="java.lang.Throwable" /> 
+		</global-exception-mappings>
+         
+     	<action name="defaultAction" class="com.t9.system.action.FastAction" method ="execute"></action> 
+	</package>
+	 
+
+</struts>

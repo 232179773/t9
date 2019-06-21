@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
+	<property name="logDir" value="./log" />
+
+	<appender name="RootFileAppender" class="ch.qos.logback.core.FileAppender">
+		<Encoding>UTF-8</Encoding>
+		<file>${logDir}/stats-${byDay}.log</file>
+		<append>true</append>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss}, %p, %c, %t, %F, %L, %C{1}, %M %m%n
+			</pattern>
+		</layout>
+		<maxHistory>30</maxHistory>
+	</appender>
+
+	<appender name="RootConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{HH:mm:ss.SSS} %-5level %logger{80} - %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="RootConsoleAppender" />
+		<appender-ref ref="RootFileAppender" />
+	</root>
+	<logger name="com.t9" level="DEBUG" />
+	<logger name="java.sql.PreparedStatement" level="DEBUG" />
+	<logger name="org.springframework.ui.freemarker" level="DEBUG" />
+</configuration>
+

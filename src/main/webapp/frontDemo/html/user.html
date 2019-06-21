@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="zh-cn" http-equiv="Content-Language"><title></title>
+<link rel="stylesheet" type="text/css" href="../css/public.css" charset="utf-8">
+</head>
+<body>
+	<!-- topMenu -->
+		<div class="topMenu">
+			<div class="con">
+				<div class="wel">HI，欢迎来到喜来登订餐网！</div>  
+				<div class="links"><a href="#">登录</a><a href="#">免费注册</a></div> 
+			</div>
+		<!-- 登录后 显示 用户中心       我的收藏       意见反馈 -->
+		</div>
+		<!-- topMenu end -->
+	<div class="content">
+		
+
+		<!-- head -->
+		<div class="head">
+			<div class="topSe">
+				<input type="text" />
+				<span></span>
+			</div>
+		</div>
+		<!-- head end -->
+		
+		<!-- userBox -->
+			<div class="userBox">
+				
+				<div class="userLeft">
+
+					<img src="../images/bg/lo.png" class="img" />
+					<ul>
+						<li  class="act">个人资料</li>
+						<li>收货地址</li>
+						<li>安全设置</li>
+						<li>我的收藏</li>
+					</ul>
+				</div>
+				<div class="userRight">
+					
+					<!-- 个人资料 -->
+					<div style="display:none;">
+						<h2>个人资料</h2>
+						
+						<table class="userInf">
+						<tbody>
+							<tr>
+								<th>登录帐号：</th>
+								<td>emily2025</td>
+							</tr>
+							<tr>
+								<th>用户名：</th>
+								<td><input class="text" type="text" /></td>
+							</tr>
+							<tr>
+								<th><i class="redStar">*</i>昵称：</th>
+								<td><input class="text" type="text" /></td>
+							</tr>
+							<tr>
+								<th>头像LOGO：</th>
+								<td><img src="../images/bg/lo.png" class="img" /></td>
+							</tr>
+							<tr>
+								<th>固定电话：</th>
+								<td><input class="text" type="text" /></td>
+							</tr>
+							<tr>
+								<th><i class="redStar">*</i>手机号：</th>
+								<td><input class="text" type="text" /></td>
+							</tr>
+							<tr>
+								<th><i class="redStar">*</i>电子邮箱：</th>
+								<td><input class="text" type="text" /></td>
+							</tr>
+							<tr>
+								<th>居住地点：</th>
+								<td><select></select><select></select><select></select></td>
+							</tr>
+							<tr>
+								<th>详细地址：</th>
+								<td><input class="text" type="text" style="width:360px;" /></td>
+							</tr>
+						</tbody>
+						</table>
+
+						<div class="btnCenter"><span class="button_org">保存</span></div>
+
+					</div>
+					<!-- 个人资料 end -->
+					<!-- 收货地址  -->
+					<div style="display:none;">
+						<h2>收货地址</h2>
+
+						<div class="addT">新增收货地址<span>电话号码、手机号选填一项,其余均为必填项</span></div>
+
+						<div class="consignee-form" >
+								
+							   <div class="list" id="name_div">
+								   <span class="label"><em>*</em>收货人：</span>
+									 <div class="field">
+									   <input type="text" class="textbox" id="consignee_name" name="consigneeParam.name" maxlength="20" >
+									 </div>
+									 <span class="status error" id="name_div_error"></span>
+							   </div>
+							   <div class="list select-address" id="area_div">
+								   <span class="label"><em>*</em>所在地区：</span>
+									 <div class="field">
+									  <span id="span_area"><span id="span_province"><select id="consignee_province" name="consigneeParam.provinceId" ><option value="">请选择：</option><option value="1">北京*</option><option value="2">上海*</option><option value="3">天津*</option><option value="4">重庆*</option><option value="5">河北*</option><option value="6">山西*</option><option value="7">河南*</option><option value="8">辽宁*</option><option value="9">吉林*</option><option value="10">黑龙江*</option><option value="11">内蒙古*</option><option value="12">江苏*</option><option value="13">山东*</option><option value="14">安徽*</option><option value="15">浙江*</option><option value="16">福建*</option><option value="17">湖北*</option><option value="18">湖南*</option><option value="19">广东*</option><option value="20">广西*</option><option value="21">江西*</option><option value="22">四川*</option><option value="23">海南*</option><option value="24">贵州*</option><option value="25">云南*</option><option value="26">西藏*</option><option value="27">陕西*</option><option value="28">甘肃*</option><option value="29">青海*</option><option value="30">宁夏*</option><option value="31">新疆*</option><option value="32">台湾*</option><option value="42">香港*</option><option value="43">澳门*</option><option value="84">钓鱼岛*</option></select></span><span id="span_city"><select id="consignee_city" name="consigneeParam.cityId"><option value="" selected="">请选择：</option></select></span><span id="span_county"><select id="consignee_county" name="consigneeParam.countyId" ><option value="" selected="">请选择：</option></select></span><span id="span_town" style="display: none;"><select id="consignee_town" name="consigneeParam.townId" onblur="check_Consignee('area_div')"><option value="" selected="">请选择：</option></select></span></span>
+									  
+									</div>
+									<span class="status error" id="area_div_error"></span>
+							   </div>
+							   <div class="list full-address" id="address_div">
+								   <span class="label"><em>*</em>详细地址：</span>
+									 <div class="field">
+									 <input type="text" class="textbox" id="consignee_address" name="consigneeParam.address" maxlength="50" >
+									 </div>
+									 <span class="status error" id="address_div_error"></span>
+							   </div>
+							   <div class="list" id="call_div">
+								   <span class="label"><em>*</em>手机号码：</span>
+									<div class="field">
+									  <div class="phone">
+										<input type="text" class="textbox" id="consignee_mobile" name="consigneeParam.mobile"  maxlength="11" >
+										<em>或</em>
+										<span>固定电话：</span>
+										<input type="text" class="textbox" id="consignee_phone" name="consigneeParam.phone"  maxlength="20">
+									  </div>
+									 <span class="status error" id="call_div_error"></span>
+								  </div>
+							   </div>
+							   <div class="list" id="email_div">
+								   <span class="label"><em></em>邮箱：</span>
+									 <div class="field">
+									   <input type="text" class="textbox" id="consignee_email" name="consigneeParam.email" maxlength="50" >
+									   <span class="form-tip">用来接收订单提醒邮件，便于您及时了解订单状态</span>
+									 </div>
+									 <span class="status error" id="email_div_error"></span>
+							   </div>
+							</div>
+						
+
+							<div class="btnCenter"><span class="button_org">保存</span></div>
+
+							<div class="addT">已保存的有效地址<span>最多保存20个有效地址</span></div>
+							<div class="addTable">
+								<table>
+									<tbody>
+										<tr>
+											<th>收货人</th>
+											<th>所在地区</th>
+											<th>街道地址</th>
+											<th>电话/手机</th>
+											<th>操作</th>
+										</tr>
+										<tr>
+											<td>张小姐 </td>
+											<td>广东省 广州市 天河区 </td>
+											<td>软件园建工路1号南天大厦 </td>
+											<td>13824417785 </td>
+											<td><a href="#">修改</a>|<a href="#">删除</a></td>
+										</tr>
+										<tr>
+											<td>张小姐 </td>
+											<td>广东省 广州市 天河区 </td>
+											<td>软件园建工路1号南天大厦 </td>
+											<td>13824417785 </td>
+											<td><a href="#">修改</a>|<a href="#">删除</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 收货地址 end -->
+
+						<!-- 安全设置  -->
+						<div>
+							<h2>安全设置</h2>
+							<div class="sList">
+								<p>登 录 邮 箱：您尚未设置登录邮箱<a href="#">设置邮箱</a></p> 
+								<p>手 机 号 码：138****7785<a href="#">更换号码</a><a href="#">解绑手机</a></p>
+								<p>上 次 登 录：2013年08月01日 10:24:34 </p>
+							</div>
+							<div class="addT">您的安全服务</div>
+							
+							<div class="sTable">
+								<table>
+									<tbody>
+										<tr>
+											<td>强度：<i>中</i></td>
+											<td>登录密码</td>
+											<td class="doc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</td>
+											<td><a href="#">修改</a></td>	
+										</tr>
+										<tr>
+											<td>已绑定</td>
+											<td>手机绑定</td>
+											<td class="doc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</td>
+											<td><a href="#">绑定</a></td>	
+										</tr>
+										<tr>
+											<td>未设置</td>
+											<td>操作保护设置	 </td>
+											<td class="doc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</td>
+											<td><a href="#">设置</a></td>	
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- 安全设置 end -->
+				</div>
+					
+			</div>
+		<!-- userBox end -->	
+
+	</div>
+
+</body>
+</html>

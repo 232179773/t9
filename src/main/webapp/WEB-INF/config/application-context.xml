@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd	
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	>
+<!-- 
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/config/jdbc.properties</value>
+			</list>
+		</property>
+	</bean> -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://10.0.1.31:3306/t9?characterEncoding=UTF-8" />
+		<property name="user" value="husq" />
+		<property name="password" value="husqqwert" />
+		<property name="autoCommitOnClose" value="true"/>
+		<property name="checkoutTimeout" value="5000"/>
+		<property name="initialPoolSize" value="2"/>
+		<property name="minPoolSize" value="2"/>
+		<property name="maxPoolSize" value="5"/>
+		<property name="maxIdleTime" value="7200"/>
+		<property name="acquireIncrement" value="2"/>
+		<property name="maxIdleTimeExcessConnections" value="3"/>
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+   	 <property name="sessionFactory">
+   	 	<bean parent="sessionFactory">
+			<property name="dataSource" ref="dataSource" />
+		</bean>
+   	 </property>
+	</bean>
+	
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="packagesToScan" value="com.t9.system.entity,com.t9.p2p.entity" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>memcached_zh_CN</value>
+			</list>
+		</property>
+	</bean>
+		
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		
+	<context:annotation-config/>
+	
+	 <tx:advice id="txAdvice" transaction-manager="transactionManager">   
+        <tx:attributes>   <!-- 
+            <tx:method name="save*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRED" />   
+            <tx:method name="insert*" propagation="REQUIRED" />   
+            <tx:method name="delete*" propagation="REQUIRED" />     -->
+            <tx:method name="*" propagation="SUPPORTS" /> 
+        </tx:attributes>   
+    </tx:advice> 
+    
+    <aop:config   proxy-target-class="true" >              
+        <aop:pointcut id="interceptorPointCuts"  expression="execution(* com.t9.*.service.*.*(..))" />   
+        <aop:advisor advice-ref="txAdvice"   pointcut-ref="interceptorPointCuts" />           
+    </aop:config> 
+	
+	<context:component-scan base-package="com.t9" />
+</beans>

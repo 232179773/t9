@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>dialog - jQuery UI dialog demo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+    <link rel="stylesheet" href="../themes/base/jquery.ui.all.css">
+		
+	<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
+	
+
+	<!--jquery UI -->
+    <script src="../jquery.ui.core.js"></script>
+    <script src="../jquery.ui.widget.js"></script>
+    <script src="../jquery.ui.button.js"></script>
+    <script src="../jquery.ui.draggable.js"></script>
+    <script src="../jquery.ui.mouse.js"></script>
+    <script src="../jquery.ui.position.js"></script>
+    <script src="../jquery.ui.widget.js"></script>
+    <script src="../jquery.ui.resizable.js"></script>
+    <script src="../jquery.ui.dialog.js"></script>
+
+    <script src="../t9dialog/t9Dialog.js"></script>
+ 
+	<script>
+	$(function() {
+		T9.dialog("#dialog-form",{
+			height: 200,
+			width: 400,
+			//modal: true,
+			buttons: {
+				"保存": function() {
+					alert('saving data ...');
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			
+			//callback function
+			close: function() {
+				//allFields.val( "" ).removeClass( "ui-state-error" );
+				alert('this is close method initialized');
+				alert('username:'+ $( "#username").val());
+				alert('telephone:'+ $( "#telephone").val());
+			},
+			
+			open:function(){
+
+				 $( "#username").val('myname');
+				 $( "#telephone").val('9988')
+			}
+		});
+		
+		/*
+		$( "#dialog-form" ).dialog({
+			autoOpen: false,
+			height: 200,
+			width: 400,
+			//modal: true,
+			buttons: {
+				"保存": function() {
+					alert('saving data ...');
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			
+			//callback function
+			close: function() {
+				//allFields.val( "" ).removeClass( "ui-state-error" );
+				alert('this is close method initialized');
+				alert('username:'+ $( "#username").val());
+				alert('telephone:'+ $( "#telephone").val());
+			},
+			
+			open:function(){
+
+				 $( "#username").val('myname');
+				 $( "#telephone").val('9988')
+			}
+		});
+		*/
+		
+		$("#modalform").click(function(){ 
+			 var isModal = false;
+			 if ($('#modalform').attr("checked") == true || $('#modalform').attr("checked") == "checked") {
+				 isModal = true;
+			//	 alert('Y');
+			 }
+			 //$('#dialog-form').dialog({ modal: isModal });
+			 
+			 T9.dialog("#dialog-form").setOption('modal', isModal);
+		});
+
+		
+		
+		//dialog-form-iframe
+		/*
+		$( "#dialog-form-iframe" ).dialog({
+			autoOpen: false
+		});
+		*/
+		 T9.dialog("#dialog-form-iframe");
+	});
+
+	
+	
+		function showdialog_form(){
+			//$( "#dialog-form" ).dialog( "open" );
+			 T9.dialog("#dialog-form").open();
+		}
+		
+		function closedialog_form(){
+			//$( "#dialog-form" ).dialog( "close" );
+			T9.dialog("#dialog-form").close();
+		}
+		
+		function bindcallbackdialog_form(){
+			/*
+			$( "#dialog-form" ).bind( "dialogclose", function(event, ui){
+				alert('this is callback method binded to dialog form. you can bind more than 1 method.');
+				alert($( "#username").val());
+			});
+			*/
+			T9.dialog("#dialog-form").bingCallback(function(event, ui){
+				alert('this is callback method binded to dialog form. you can bind more than 1 method.');
+				alert($( "#username").val());
+			});
+		}
+		
+		function showdialog_iframe(){
+			//$( "#dialog-form-iframe" ).dialog( "open" );
+			T9.dialog("#dialog-form-iframe").open();
+		}
+
+
+
+	</script>
+</head>
+<body>
+<div id="dialog-form" title="信息管理">
+	<form>
+       <table>
+          <tr>
+             <td>用户名称:</td>
+             <td><input name="username" id="username" />
+          </tr>
+          <tr>
+             <td>电话:</td>
+             <td><input name="telephone" id="telephone"/>
+          </tr>
+       </table>
+	</form>
+</div>
+
+<div id="dialog-form-iframe" title="iframe dialog">
+    <iframe src="numberspinner.html" width="400" height="200"> </iframe>
+</div>
+
+	<h2>dialog</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click on each button to see a distinct message box.</div>
+	</div>
+	
+	<p></p>
+	<div>
+	modal form:<input type="checkbox" name="modalform" id="modalform" />
+	</div>
+	
+	<div>
+		<a href="#" class="easyui-linkbutton" onclick="showdialog_form()">show dialog-form</a>
+        <a href="#" class="easyui-linkbutton" onclick="closedialog_form()">close dialog-form</a>
+        <a href="#" class="easyui-linkbutton" onclick="bindcallbackdialog_form()">bind callback method</a>
+        
+        <a href="#" class="easyui-linkbutton" onclick="showdialog_iframe()">show dialog-iframe</a>
+	</div>
+	
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd	
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	>
+	
+	<import resource="application-datasource.xml" />
+ 
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/config/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/t9?characterEncoding=UTF-8" />
+		<property name="user" value="root" />
+		<property name="password" value="password" />
+		<property name="autoCommitOnClose" value="true"/>
+		<property name="checkoutTimeout" value="5000"/>
+		<property name="initialPoolSize" value="1"/>
+		<property name="minPoolSize" value="1"/>
+		<property name="maxPoolSize" value="1"/>
+		<property name="maxIdleTime" value="7200"/>
+		<property name="acquireIncrement" value="2"/>
+		<property name="maxIdleTimeExcessConnections" value="1"/>
+	</bean>
+	
+	<bean id="dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/arp?characterEncoding=UTF-8" />
+        <property name="user" value="root" />
+        <property name="password" value="password" />
+        <property name="autoCommitOnClose" value="true"/>
+        <property name="checkoutTimeout" value="5000"/>
+        <property name="initialPoolSize" value="0"/>
+        <property name="minPoolSize" value="0"/>
+        <property name="maxPoolSize" value="1"/>
+        <property name="maxIdleTime" value="7200"/>
+        <property name="acquireIncrement" value="2"/>
+        <property name="maxIdleTimeExcessConnections" value="1"/>
+    </bean>
+    
+    
+	
+	<bean id="hibernateTemplate1" class="org.springframework.orm.hibernate3.HibernateTemplate">
+   	 <property name="sessionFactory">
+   	 	<bean parent="sessionFactory">
+			<property name="dataSource" ref="dataSource1" />
+		</bean>
+   	 </property>
+	</bean>
+	
+	<bean id="hibernateTemplate2" class="org.springframework.orm.hibernate3.HibernateTemplate">
+     <property name="sessionFactory">
+        <bean parent="sessionFactory">
+            <property name="dataSource" ref="dataSource2" />
+        </bean>
+     </property>
+    </bean>
+	
+	
+    <bean id="hibernateHolder" class="com.t9.system.trans.HibernateHolder">
+        <property name="defatultHibernateTemplate" ref="hibernateTemplate1"></property>
+        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="hibernateTemplates">
+            <map>
+                  <entry key="dataSource1" value-ref="hibernateTemplate1"/>
+                  <entry key="dataSource2" value-ref="hibernateTemplate2"/>
+           </map>
+        </property>
+    </bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="packagesToScan" value="com.t9.system.entity,com.t9.p2p.entity" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>memcached_zh_CN</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="transactionManager" class="com.t9.system.trans.HibernateTransactionManager">
+        <property name="localTransactionManager" ref="jtaTransactionManager"/>
+    </bean>
+		
+    <!-- 本地事务管理类- -->
+    <bean id="localTransactionManager"
+        class="com.t9.system.trans.HibernateTransactionManagerWrapper">
+        <property name="templateHolder" ref="hibernateHolder" />
+    </bean>
+    
+    <bean id="jtaTransactionManager" class="com.t9.system.trans.JtaProxyTransactionManager" parent="transactionManager_default"></bean>
+    <!-- 
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean> -->
+		
+	<context:annotation-config/>
+	
+	 <tx:advice id="txAdvice" transaction-manager="transactionManager">   
+        <tx:attributes>   <!-- 
+            <tx:method name="save*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRED" />   
+            <tx:method name="insert*" propagation="REQUIRED" />   
+            <tx:method name="delete*" propagation="REQUIRED" />     -->
+            <tx:method name="*" propagation="REQUIRED" /> 
+        </tx:attributes>   
+    </tx:advice> 
+    
+    
+    
+    
+    <aop:config   proxy-target-class="true" >              
+        <aop:pointcut id="interceptorPointCuts"  expression="execution(* com.t9.*.service.*.*(..))" />   
+        <aop:advisor advice-ref="txAdvice"   pointcut-ref="interceptorPointCuts" />           
+    </aop:config> 
+	
+	<context:component-scan base-package="com.t9" />
+</beans>

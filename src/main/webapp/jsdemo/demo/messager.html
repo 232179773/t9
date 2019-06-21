@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Messager - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<script type="text/javascript" src="../jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../../system/js/messager/T9Messager.js"></script>
+	<script>
+		function T9show1(){
+			T9.messager.show("message");
+		}
+		function T9show2(){
+			T9.messager.show("message",'show');
+		}
+		function T9show3(){
+			T9.messager.show("message",'show','title');
+		}
+		function T9show4(){
+			T9.messager.show("message",'show','title',2000);
+		}
+		
+		function T9progress1(){
+			T9.messager.progress("message");
+		}
+		function T9progress2(){
+			T9.messager.progress("message","title");
+		}
+		function T9progress3(){
+			T9.messager.progress("message","title",5000);
+		}
+		
+		function T9alert1(){
+			T9.messager.alert('message')
+			
+		}
+		function T9alert2(){
+			T9.messager.alert('message','title')
+		}
+		function T9alert3(){
+			T9.messager.alert('message','title','info');
+		}
+		
+		function T9confirm1(){
+			T9.messager.confirm('message')
+		}
+		function T9confirm2(){
+			T9.messager.confirm('message','title')
+		}
+		function T9confirm3(){
+			T9.messager.confirm('message','title',callback);
+		}
+		function T9prompt1(){
+			T9.messager.prompt('message');
+		}
+		function T9prompt2(){
+			T9.messager.prompt('message','title');
+		}
+		function T9prompt3(){
+			T9.messager.prompt('message','title',callback);
+			
+		}
+		function callback(r){
+			if(r){
+				alert("success");
+			}
+		}
+		
+		function T9toast1(){
+			new T9.messager.Toast({context:$('body'),message:'Toast效果显示'});
+		}
+	</script>
+</head>
+<body>
+	<h2>Messager</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click on each button to see a distinct message box.</div>
+	</div>
+	<p>T9Message Window</p>
+	<div>
+		<a href="#" class="easyui-linkbutton" onclick="T9show1();">T9show1</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9show2();">T9show2</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9show3();">T9show3</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9show4();">T9show4</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9progress1()">T9progress1</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9progress2()">T9progress2</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9progress3()">T9progress3</a>
+	</div>
+	<p>T9Message Dialog</p>
+	<div>
+		<a href="#" class="easyui-linkbutton" onclick="T9alert1();">alert1</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9alert2();">alert2</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9alert3();">alert3</a>
+	</div>
+	<p>T9Interactive Dialog</p>
+	<div>
+		<a href="#" class="easyui-linkbutton" onclick="T9confirm1();">T9confirm1</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9confirm2();">T9confirm2</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9confirm3();">T9confirm3</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9prompt1();">T9prompt1</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9prompt2();">T9prompt2</a>
+		<a href="#" class="easyui-linkbutton" onclick="T9prompt3();">T9prompt3</a>
+	</div>
+	<p>T9Toast</p>
+	<div>
+		<a href="#" class="easyui-linkbutton" onclick="T9toast1();">T9toast1</a>
+		
+	</div>
+</body>
+</html>

@@ -11,7 +11,7 @@
 		<java-version>1.8</java-version>
 		<tomcat-version>8.0.23</tomcat-version>
         <org.springframework-version>4.1.5.RELEASE</org.springframework-version>
-		<struts2.version>2.3.20</struts2.version>
+		<struts2.version>2.5.30</struts2.version>
 		<org.aspectj-version>1.7.4</org.aspectj-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
